@@ -1,13 +1,16 @@
-package com.danto.ShootApp.Entity.Participation;
+package com.danto.ShootApp.entity.participation;
 
-import com.danto.ShootApp.Entity.Competition.CompetitionEntity;
-import com.danto.ShootApp.Entity.Role.RoleEntity;
-import com.danto.ShootApp.Entity.User.UserEntity;
+import com.danto.ShootApp.entity.competition.CompetitionEntity;
+import com.danto.ShootApp.entity.result.ResultEntity;
+import com.danto.ShootApp.entity.role.RoleEntity;
+import com.danto.ShootApp.entity.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,5 +35,8 @@ public class ParticipationEntity {
     @ManyToOne
     @JoinColumn(name = "id_role", nullable = false)
     private RoleEntity role;
+
+    @OneToMany(mappedBy = "participation")
+    private List<ResultEntity> results;
 
 }

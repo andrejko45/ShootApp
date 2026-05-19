@@ -1,6 +1,6 @@
-package com.danto.ShootApp.Entity.Role;
+package com.danto.ShootApp.entity.role;
 
-import com.danto.ShootApp.Entity.Participation.ParticipationEntity;
+import com.danto.ShootApp.entity.participation.ParticipationEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,10 +23,12 @@ public class RoleEntity {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role type;
+    private String name;
+
+    @Column(nullable = false)
+    private String description;
 
     @OneToMany(mappedBy = "role")
-    private List<ParticipationEntity> participation;
+    private List<ParticipationEntity> participations;
 
 }

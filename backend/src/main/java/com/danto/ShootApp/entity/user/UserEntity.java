@@ -1,13 +1,13 @@
-package com.danto.ShootApp.Entity.Competition;
+package com.danto.ShootApp.entity.user;
 
-import com.danto.ShootApp.Entity.Participation.ParticipationEntity;
+
+import com.danto.ShootApp.entity.participation.ParticipationEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,8 +15,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "competitions")
-public class CompetitionEntity {
+@Table(name = "users")
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +27,16 @@ public class CompetitionEntity {
     private String name;
 
     @Column(nullable = false)
-    private String place;
+    private String surname;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private String email;
 
-    @OneToMany(mappedBy = "competition")
-    private List<ParticipationEntity> participation;
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @OneToMany(mappedBy = "user")
+    private List<ParticipationEntity> participations;
 
 
 
