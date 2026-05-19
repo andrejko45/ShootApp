@@ -4,6 +4,7 @@ package com.danto.ShootApp.entity.result;
 import com.danto.ShootApp.entity.participation.ParticipationEntity;
 import com.danto.ShootApp.entity.round.RoundEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "results")
+@Table(name = "results", uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {
+                        "id_participation",
+                        "id_round"
+                }
+        )
+})
 public class ResultEntity {
 
     @Id
@@ -29,6 +37,7 @@ public class ResultEntity {
     @JoinColumn(name = "id_round", nullable = false)
     private RoundEntity round;
 
+    @NotNull
     @Column(nullable = false)
     private Integer points;
 

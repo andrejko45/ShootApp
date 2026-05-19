@@ -4,6 +4,7 @@ package com.danto.ShootApp.entity.round;
 import com.danto.ShootApp.entity.competition.CompetitionEntity;
 import com.danto.ShootApp.entity.result.ResultEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "rounds")
+@Table(name = "rounds", uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {
+                        "id_competition",
+                        "order_index"
+                }
+        )
+})
 public class RoundEntity {
 
     @Id
@@ -29,6 +37,10 @@ public class RoundEntity {
 
     @OneToMany(mappedBy = "round")
     private List<ResultEntity> results;
+
+    @NotNull
+    @Column(name = "order_index",nullable = false)
+    private Integer orderIndex;
 
 
 }

@@ -17,7 +17,14 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "participations")
+@Table(name = "participations", uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {
+                        "id_user",
+                        "id_competition"
+                }
+        )
+})
 public class ParticipationEntity {
 
     @Id
