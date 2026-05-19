@@ -1,9 +1,13 @@
 package com.danto.ShootApp.service.user;
 
 import com.danto.ShootApp.dto.user.CreateUserRequest;
-import com.danto.ShootApp.entity.user.UserEntity;
+import com.danto.ShootApp.dto.user.CreateUserResponse;
+
+
+import java.util.List;
 
 public interface UserService {
 
-    UserEntity createUser(CreateUserRequest request);
+    CreateUserResponse createUser(CreateUserRequest request);
+    List<CreateUserResponse> getUsers();
 }
