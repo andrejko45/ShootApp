@@ -1,5 +1,6 @@
 package com.danto.ShootApp.service.user.impl;
 
+import com.danto.ShootApp.customExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.CreateUserRequest;
 import com.danto.ShootApp.dto.user.CreateUserResponse;
 import com.danto.ShootApp.entity.user.UserEntity;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Override
     public CreateUserResponse createUser(CreateUserRequest request) {
         logger.trace("Creating user {}", request);
 
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(newUser);
     }
 
+    @Override
     public List<CreateUserResponse> getUsers() {
         logger.trace("Finding all users !");
 
@@ -50,6 +54,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return userList;
+    }
+
+    @Override
+    public CreateUserResponse findUserByEmail(String email) {
+        logger.trace("Finding a user by email!");
+
+        if(userRepository.existsByEmail(email)) {
+            CreateUserResponse foundUser = userMapper.toResponse(userRepository.getUserByEmail(email));
+            return foundUser;
+        }
+        else {
+            throw new UserNotFoundException("User with email: " + email + " not found.");
+        }
     }
 
 }
