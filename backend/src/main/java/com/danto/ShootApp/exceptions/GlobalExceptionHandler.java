@@ -1,7 +1,7 @@
-package com.danto.ShootApp.controller;
+package com.danto.ShootApp.exceptions;
 
 
-import com.danto.ShootApp.customExceptions.UserNotFoundException;
+import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.UserErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

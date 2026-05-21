@@ -1,4 +1,4 @@
-package com.danto.ShootApp.customExceptions;
+package com.danto.ShootApp.exceptions.userExceptions;
 
 
 public class UserNotFoundException extends RuntimeException {

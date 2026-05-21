@@ -1,6 +1,6 @@
 package com.danto.ShootApp.service.user.impl;
 
-import com.danto.ShootApp.customExceptions.UserNotFoundException;
+import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.CreateUserRequest;
 import com.danto.ShootApp.dto.user.CreateUserResponse;
 import com.danto.ShootApp.entity.user.UserEntity;
@@ -11,12 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Validated
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -65,8 +67,23 @@ public class UserServiceImpl implements UserService {
             return foundUser;
         }
         else {
-            throw new UserNotFoundException("User with email: " + email + " not found.");
+            throw new UserNotFoundException("User with email: " + email + " not found !");
         }
+    }
+
+    @Override
+    public CreateUserResponse findUserById(Long id) {
+        logger.trace("Finding a user by ID!");
+
+        Optional<UserEntity> userById = userRepository.findById(id);
+        if(userById.isPresent()) {
+            return userMapper.toResponse(userById.get());
+        }
+        else {
+            throw new UserNotFoundException("User with ID: " + id + " not found !");
+        }
+
+
     }
 
 }

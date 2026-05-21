@@ -11,5 +11,6 @@ public interface UserService {
     CreateUserResponse createUser(CreateUserRequest request);
     List<CreateUserResponse> getUsers();
     CreateUserResponse findUserByEmail(String email);
+    CreateUserResponse findUserById(Long id);
 
 }
