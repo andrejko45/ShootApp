@@ -1,8 +1,9 @@
-package com.danto.ShootApp.controller;
+package com.danto.ShootApp.exceptions;
 
 
-import com.danto.ShootApp.customExceptions.UserNotFoundException;
-import com.danto.ShootApp.dto.user.UserErrorResponse;
+import com.danto.ShootApp.dto.user.UserNotFoundResponse;
+import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
+import com.danto.ShootApp.dto.user.UserValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public UserErrorResponse errorResponse(MethodArgumentNotValidException e) {
+    public UserValidationErrorResponse errorResponse(MethodArgumentNotValidException e) {
 
         List<String> userErrorsList = new ArrayList<>();
         List<FieldError> userFieldErrors = e.getBindingResult().getFieldErrors();
@@ -26,18 +27,13 @@ public class GlobalExceptionHandler {
             userErrorsList.add(userError.getDefaultMessage());
         }
 
-        return new UserErrorResponse("Validation failed !", userErrorsList);
+        return new UserValidationErrorResponse("Validation failed !", userErrorsList);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public UserErrorResponse notFoundResponse(UserNotFoundException e) {
-        List<String> userNotFound = new ArrayList<>();
-        userNotFound.add(e.getMessage());
-
-
-        return new UserErrorResponse("Not found !", userNotFound);
-
+    public UserNotFoundResponse userNotFoundResponse(UserNotFoundException e) {
+        return new UserNotFoundResponse(e.getMessage());
     }
 
 }
