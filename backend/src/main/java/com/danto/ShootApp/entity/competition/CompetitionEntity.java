@@ -27,7 +27,7 @@ public class CompetitionEntity {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @NotBlank

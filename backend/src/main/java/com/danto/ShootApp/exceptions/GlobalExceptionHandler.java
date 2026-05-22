@@ -1,7 +1,9 @@
 package com.danto.ShootApp.exceptions;
 
 
+import com.danto.ShootApp.dto.competition.DateNotValidResponse;
 import com.danto.ShootApp.dto.user.UserNotFoundResponse;
+import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.UserValidationErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // USER ERRORS AND EXCEPTIONS
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -35,5 +39,14 @@ public class GlobalExceptionHandler {
     public UserNotFoundResponse userNotFoundResponse(UserNotFoundException e) {
         return new UserNotFoundResponse(e.getMessage());
     }
+
+    // COMPETITION ERRORS AND EXCEPTIONS
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DateNotValidException.class)
+    public DateNotValidResponse dateNotValidResponse(DateNotValidException e) {
+        return new DateNotValidResponse(e.getMessage());
+    }
+
 
 }
