@@ -1,5 +1,6 @@
 package com.danto.ShootApp.service.user.impl;
 
+import com.danto.ShootApp.dto.user.UpdateUserRequest;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.CreateUserRequest;
 import com.danto.ShootApp.dto.user.CreateUserResponse;
@@ -82,7 +83,23 @@ public class UserServiceImpl implements UserService {
         else {
             throw new UserNotFoundException("User with ID: " + id + " not found !");
         }
+    }
 
+    @Override
+    public CreateUserResponse fullUserUpdate(UpdateUserRequest updateUser) {
+        logger.trace("Updating a user!");
+        Optional<UserEntity> userToBeU = userRepository.findById(updateUser.id());
+        if(userToBeU.isPresent()) {
+            userToBeU.get().setName(updateUser.name());
+            userToBeU.get().setSurname(updateUser.surname());
+            userToBeU.get().setEmail(updateUser.email());
+            userToBeU.get().setPhoneNumber(updateUser.phoneNumber());
+            userRepository.save(userToBeU.get());
+            return userMapper.toResponse(userToBeU.get());
+        }
+        else {
+            throw new UserNotFoundException("User name: " + updateUser.name() + "\n    surname; " + updateUser.surname() + " not found !");
+        }
 
     }
 

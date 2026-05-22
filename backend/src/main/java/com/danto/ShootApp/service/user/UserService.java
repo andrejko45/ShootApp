@@ -2,6 +2,7 @@ package com.danto.ShootApp.service.user;
 
 import com.danto.ShootApp.dto.user.CreateUserRequest;
 import com.danto.ShootApp.dto.user.CreateUserResponse;
+import com.danto.ShootApp.dto.user.UpdateUserRequest;
 
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface UserService {
     List<CreateUserResponse> getUsers();
     CreateUserResponse findUserByEmail(String email);
     CreateUserResponse findUserById(Long id);
-
+    CreateUserResponse fullUserUpdate(UpdateUserRequest updateUser);
 }

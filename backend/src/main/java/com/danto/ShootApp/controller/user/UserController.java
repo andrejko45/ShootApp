@@ -2,6 +2,7 @@ package com.danto.ShootApp.controller.user;
 
 import com.danto.ShootApp.dto.user.CreateUserRequest;
 import com.danto.ShootApp.dto.user.CreateUserResponse;
+import com.danto.ShootApp.dto.user.UpdateUserRequest;
 import com.danto.ShootApp.service.user.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -42,5 +43,9 @@ public class UserController {
         return userService.createUser(request);
     }
 
+    @PutMapping
+    public CreateUserResponse updateUser(@Valid @RequestBody UpdateUserRequest updateRequest) {
+        return userService.fullUserUpdate(updateRequest);
+    }
 
 }
