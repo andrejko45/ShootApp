@@ -1,8 +1,10 @@
 package com.danto.ShootApp.exceptions;
 
 
+import com.danto.ShootApp.dto.competition.CompetitionNotFoundResponse;
 import com.danto.ShootApp.dto.competition.DateNotValidResponse;
 import com.danto.ShootApp.dto.user.UserNotFoundResponse;
+import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.UserValidationErrorResponse;
@@ -46,6 +48,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DateNotValidException.class)
     public DateNotValidResponse dateNotValidResponse(DateNotValidException e) {
         return new DateNotValidResponse(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CompetitionNotFoundException.class)
+    public CompetitionNotFoundResponse competitionNotFoundResponse(CompetitionNotFoundException e) {
+        return new CompetitionNotFoundResponse(e.getMessage());
     }
 
 

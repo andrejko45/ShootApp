@@ -2,7 +2,9 @@ package com.danto.ShootApp.service.competition.impl;
 
 import com.danto.ShootApp.dto.competition.CreateCompetitionRequest;
 import com.danto.ShootApp.dto.competition.CreateCompetitionResponse;
+import com.danto.ShootApp.dto.competition.UpdateCompetitionRequest;
 import com.danto.ShootApp.entity.competition.CompetitionEntity;
+import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
 import com.danto.ShootApp.mapper.competition.CompetitionMapper;
 import com.danto.ShootApp.repository.competition.CompetitionRepository;
@@ -13,10 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -59,5 +62,26 @@ public class CompetitionServiceImpl implements CompetitionService {
         return competitionList;
     }
 
+
+
+    @Override
+    public CreateCompetitionResponse fullCompUpdate(UpdateCompetitionRequest request) {
+        logger.trace("Updating competition !");
+
+        Optional<CompetitionEntity> compToBeUpdated = competitionRepository.findById(request.id());
+
+        if(compToBeUpdated.isPresent()) {
+
+            compToBeUpdated.get().setName(request.name());
+            compToBeUpdated.get().setPlace(request.place());
+            compToBeUpdated.get().setDate(request.date());
+            competitionRepository.save(compToBeUpdated.get());
+            return competitionMapper.toResponse(compToBeUpdated.get());
+        }
+        else {
+            throw new CompetitionNotFoundException("Competition " + request.name() + " not found !");
+        }
+
+    }
 
 }
