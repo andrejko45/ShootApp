@@ -30,6 +30,7 @@ public class CompetitionController {
         return competitionService.getCompetitions();
     }
 
+
     @PutMapping
     public CreateCompetitionResponse updateComp(@Valid @RequestBody UpdateCompetitionRequest request) {
         return competitionService.fullCompUpdate(request);

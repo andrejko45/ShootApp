@@ -2,6 +2,7 @@ package com.danto.ShootApp.service.user.impl;
 
 import com.danto.ShootApp.dto.user.DeleteResponse;
 import com.danto.ShootApp.dto.user.UpdateUserRequest;
+import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
 import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.dto.user.CreateUserRequest;
@@ -39,6 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public CreateUserResponse createUser(CreateUserRequest request) {
         logger.trace("Creating user {}", request);
+
+        if(userRepository.existsByEmail(request.email()) || userRepository.existsByPhoneNumber(request.phoneNumber())) {
+            throw new UserAlreadyExists("User with email: " + request.email() + " phone number: " + request.phoneNumber() + " already exists !");
+        }
 
 
         UserEntity newUser = userMapper.toEntity(request);
