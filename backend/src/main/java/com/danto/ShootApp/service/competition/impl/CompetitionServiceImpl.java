@@ -4,6 +4,7 @@ import com.danto.ShootApp.dto.competition.CreateCompetitionRequest;
 import com.danto.ShootApp.dto.competition.CreateCompetitionResponse;
 import com.danto.ShootApp.dto.competition.UpdateCompetitionRequest;
 import com.danto.ShootApp.entity.competition.CompetitionEntity;
+import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
 import com.danto.ShootApp.mapper.competition.CompetitionMapper;
@@ -37,6 +38,11 @@ public class CompetitionServiceImpl implements CompetitionService {
     public CreateCompetitionResponse createCompetition(CreateCompetitionRequest request) {
         logger.trace("Creating competition {}", request);
 
+
+        if(competitionRepository.existsByName(request.name())) {
+            throw new CompAlreadyExists("Competition with name " + request.name() + " already exists !");
+        }
+
         if(request.date().isAfter(LocalDate.now())) {
 
             CompetitionEntity newCompetition = competitionMapper.toEntity(request);
@@ -60,6 +66,16 @@ public class CompetitionServiceImpl implements CompetitionService {
         }
 
         return competitionList;
+    }
+
+    @Override
+    public CreateCompetitionResponse findCompByName(String name) {
+        if(competitionRepository.existsByName(name)) {
+            return competitionMapper.toResponse(competitionRepository.getCompetitionByName(name));
+        }
+        else {
+            throw new CompetitionNotFoundException("Competition with name " + name + " not found !");
+        }
     }
 
 

@@ -30,6 +30,10 @@ public class CompetitionController {
         return competitionService.getCompetitions();
     }
 
+    @GetMapping(path = "/name/{name}")
+    public CreateCompetitionResponse findCompByName(@PathVariable String name) {
+        return competitionService.findCompByName(name);
+    }
 
     @PutMapping
     public CreateCompetitionResponse updateComp(@Valid @RequestBody UpdateCompetitionRequest request) {

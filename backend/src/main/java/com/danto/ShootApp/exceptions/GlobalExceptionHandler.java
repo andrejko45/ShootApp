@@ -2,9 +2,10 @@ package com.danto.ShootApp.exceptions;
 
 
 import com.danto.ShootApp.dto.ValidationErrorResponse;
-import com.danto.ShootApp.dto.competition.CompetitionNotFoundResponse;
+import com.danto.ShootApp.dto.competition.CompetitionNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.competition.DateNotValidResponse;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
+import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
@@ -61,8 +62,14 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CompetitionNotFoundException.class)
-    public CompetitionNotFoundResponse competitionNotFoundResponse(CompetitionNotFoundException e) {
-        return new CompetitionNotFoundResponse(e.getMessage());
+    public CompetitionNotFoundOrExistsResponse competitionNotFoundResponse(CompetitionNotFoundException e) {
+        return new CompetitionNotFoundOrExistsResponse(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CompAlreadyExists.class)
+    public CompetitionNotFoundOrExistsResponse competitionAlreadyExistsResponse(CompAlreadyExists e) {
+        return new CompetitionNotFoundOrExistsResponse(e.getMessage());
     }
 
 

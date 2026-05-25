@@ -11,5 +11,6 @@ public interface CompetitionService {
     CreateCompetitionResponse createCompetition(CreateCompetitionRequest request);
     List<CreateCompetitionResponse> getCompetitions();
     CreateCompetitionResponse fullCompUpdate(UpdateCompetitionRequest request);
+    CreateCompetitionResponse findCompByName(String name);
 
 }
