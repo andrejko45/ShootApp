@@ -85,6 +85,31 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
 
+    @Override
+    public List<CreateCompetitionResponse> findCompByPlace(String place) {
+
+        List<CreateCompetitionResponse> compList = new ArrayList<>();
+        for(CompetitionEntity c : competitionRepository.findByPlace(place)) {
+            compList.add(competitionMapper.toResponse(c));
+        }
+
+        return compList;
+
+    }
+
+
+    @Override
+    public List<CreateCompetitionResponse> findCompByDate(LocalDate date) {
+
+        List<CreateCompetitionResponse> compList = new ArrayList<>();
+        for(CompetitionEntity c : competitionRepository.findByDate(date)) {
+            compList.add(competitionMapper.toResponse(c));
+        }
+
+        return compList;
+    }
+
+
 
     @Override
     public CreateCompetitionResponse fullCompUpdate(UpdateCompetitionRequest request) {

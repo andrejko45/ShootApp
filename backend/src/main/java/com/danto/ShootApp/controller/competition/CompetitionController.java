@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin
@@ -34,6 +35,16 @@ public class CompetitionController {
     @GetMapping(path = "/name/{name}")
     public CreateCompetitionResponse findCompByName(@PathVariable String name) {
         return competitionService.findCompByName(name);
+    }
+
+    @GetMapping(path = "/place/{place}")
+    public List<CreateCompetitionResponse> findCompByPlace(@PathVariable String place) {
+        return competitionService.findCompByPlace(place);
+    }
+
+    @GetMapping(path = "/date/{date}")
+    public List<CreateCompetitionResponse> findCompByDate(@PathVariable LocalDate date) {
+        return competitionService.findCompByDate(date);
     }
 
     @PutMapping
