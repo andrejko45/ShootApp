@@ -76,6 +76,8 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public CreateCompetitionResponse findCompByName(String name) {
+        logger.trace("Finding a competition by name !");
+
         if(competitionRepository.existsByName(name)) {
             return competitionMapper.toResponse(competitionRepository.getCompetitionByName(name));
         }
@@ -87,6 +89,8 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public List<CreateCompetitionResponse> findCompByPlace(String place) {
+        logger.trace("Finding competitions by place !");
+
 
         List<CreateCompetitionResponse> compList = new ArrayList<>();
         for(CompetitionEntity c : competitionRepository.findByPlace(place)) {
@@ -100,6 +104,8 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public List<CreateCompetitionResponse> findCompByDate(LocalDate date) {
+        logger.trace("Finding competitions by date !");
+
 
         List<CreateCompetitionResponse> compList = new ArrayList<>();
         for(CompetitionEntity c : competitionRepository.findByDate(date)) {
