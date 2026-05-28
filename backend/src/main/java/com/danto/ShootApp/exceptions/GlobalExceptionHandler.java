@@ -1,14 +1,17 @@
 package com.danto.ShootApp.exceptions;
 
 
+import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.ValidationErrorResponse;
 import com.danto.ShootApp.dto.competition.CompetitionNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.competition.DateNotValidResponse;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
+import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
+import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -52,6 +55,13 @@ public class GlobalExceptionHandler {
         return new UserNotFoundOrExistsResponse(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserHasParticipationException.class)
+    public DeleteResponse userHasParticipations(UserHasParticipationException e) {
+        return new DeleteResponse(e.getMessage());
+    }
+
+
     // COMPETITION ERRORS AND EXCEPTIONS
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -70,6 +80,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CompAlreadyExists.class)
     public CompetitionNotFoundOrExistsResponse competitionAlreadyExistsResponse(CompAlreadyExists e) {
         return new CompetitionNotFoundOrExistsResponse(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CompHasParticipation.class)
+    public DeleteResponse compHasParticipation(CompHasParticipation e) {
+        return new DeleteResponse(e.getMessage());
     }
 
 

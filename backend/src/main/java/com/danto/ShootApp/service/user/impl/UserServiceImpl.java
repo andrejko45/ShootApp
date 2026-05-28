@@ -1,6 +1,6 @@
 package com.danto.ShootApp.service.user.impl;
 
-import com.danto.ShootApp.dto.user.DeleteResponse;
+import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.user.UpdateUserRequest;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
 import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
         logger.trace("Deleting a user with ID: " + id);
 
         if(participationRepository.existsByUser_Id(id)) {
-            throw new UserHasParticipationException("User with ID: " + id + " has particiption in at least one competition ! Please delete the participation first !");
+            throw new UserHasParticipationException("User with ID: " + id + " has participation in at least one competition ! Please delete the participation first !");
         }
 
         boolean exists = userRepository.existsById(id);

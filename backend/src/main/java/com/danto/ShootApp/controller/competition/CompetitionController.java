@@ -1,5 +1,6 @@
 package com.danto.ShootApp.controller.competition;
 
+import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.competition.CreateCompetitionRequest;
 import com.danto.ShootApp.dto.competition.CreateCompetitionResponse;
 import com.danto.ShootApp.dto.competition.UpdateCompetitionRequest;
@@ -38,6 +39,11 @@ public class CompetitionController {
     @PutMapping
     public CreateCompetitionResponse updateComp(@Valid @RequestBody UpdateCompetitionRequest request) {
         return competitionService.fullCompUpdate(request);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public DeleteResponse deleteCompetition(@PathVariable Long id) {
+        return competitionService.deleteCompetition(id);
     }
 
 

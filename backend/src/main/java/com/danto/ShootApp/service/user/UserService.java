@@ -1,8 +1,8 @@
 package com.danto.ShootApp.service.user;
 
+import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.user.CreateUserRequest;
 import com.danto.ShootApp.dto.user.CreateUserResponse;
-import com.danto.ShootApp.dto.user.DeleteResponse;
 import com.danto.ShootApp.dto.user.UpdateUserRequest;
 
 

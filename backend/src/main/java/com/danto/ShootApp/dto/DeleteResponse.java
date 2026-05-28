@@ -1,4 +1,4 @@
-package com.danto.ShootApp.dto.user;
+package com.danto.ShootApp.dto;
 
 public record DeleteResponse(String message) {
 }
