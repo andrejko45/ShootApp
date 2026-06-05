@@ -146,7 +146,6 @@ public class CompetitionServiceImpl implements CompetitionService {
             throw new CompHasParticipation("Competition with ID: " + id + " has at least one participation ! Please delete the participation first !");
         }
 
-
         boolean exists = competitionRepository.existsById(id);
         if(exists) {
             competitionRepository.deleteById(id);
@@ -155,11 +154,6 @@ public class CompetitionServiceImpl implements CompetitionService {
         else {
             throw new CompetitionNotFoundException("Competition with ID: " + id + " not found !");
         }
-
-
-
-
-
 
     }
 

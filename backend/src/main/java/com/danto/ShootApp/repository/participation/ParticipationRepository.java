@@ -8,5 +8,6 @@ public interface ParticipationRepository extends JpaRepository<ParticipationEnti
 
     boolean existsByUser_Id(Long id);
     boolean existsByCompetition_Id(Long id);
+    boolean existsByRole_Id(Long id);
 
 }

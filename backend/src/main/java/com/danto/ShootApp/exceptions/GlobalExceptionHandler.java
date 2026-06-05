@@ -10,6 +10,9 @@ import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
+import com.danto.ShootApp.exceptions.roleExceptions.RoleAlreadyExists;
+import com.danto.ShootApp.exceptions.roleExceptions.RoleHasParticipation;
+import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
 import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
@@ -85,6 +88,25 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CompHasParticipation.class)
     public DeleteResponse compHasParticipation(CompHasParticipation e) {
+        return new DeleteResponse(e.getMessage());
+    }
+
+    // ROLES ERRORS AND EXCEPTIONS
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RoleAlreadyExists.class)
+    public RoleAlreadyExists roleAlreadyExistsResponse(RoleAlreadyExists e) {
+        return new RoleAlreadyExists(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(RoleNotFoundException.class)
+    public RoleNotFoundException roleNotFoundResponse(RoleNotFoundException e) {
+        return new RoleNotFoundException(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RoleHasParticipation.class)
+    public DeleteResponse roleHasParticipation(RoleHasParticipation e) {
         return new DeleteResponse(e.getMessage());
     }
 

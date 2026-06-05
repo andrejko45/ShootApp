@@ -7,7 +7,6 @@ import com.danto.ShootApp.dto.competition.UpdateCompetitionRequest;
 import com.danto.ShootApp.service.competition.CompetitionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -19,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompetitionController {
 
-    @Autowired
+
     private final CompetitionService competitionService;
 
     @PostMapping

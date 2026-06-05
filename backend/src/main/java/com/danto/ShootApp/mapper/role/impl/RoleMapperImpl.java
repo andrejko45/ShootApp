@@ -13,7 +13,7 @@ public class RoleMapperImpl implements RoleMapper {
 
     @Override
     public RoleEntity toEntity(CreateRoleRequest request) {
-        return new RoleEntity(null, request.name(), request.title(), null);
+        return new RoleEntity(null, request.name(), request.description(), null);
     }
 
     @Override

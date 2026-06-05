@@ -1,13 +1,17 @@
 package com.danto.ShootApp.service.role.impl;
 
+import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.role.CreateRoleRequest;
 import com.danto.ShootApp.dto.role.CreateRoleResponse;
 import com.danto.ShootApp.dto.role.UpdateRoleRequest;
 import com.danto.ShootApp.entity.role.RoleEntity;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleAlreadyExists;
+import com.danto.ShootApp.exceptions.roleExceptions.RoleHasParticipation;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.mapper.role.RoleMapper;
+import com.danto.ShootApp.repository.participation.ParticipationRepository;
 import com.danto.ShootApp.repository.role.RoleRepository;
+import com.danto.ShootApp.service.role.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +24,7 @@ import java.util.Optional;
 
 @Service
 @Validated
-public class RoleServiceImpl {
+public class RoleServiceImpl implements RoleService {
 
     private final static Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 
@@ -28,8 +32,14 @@ public class RoleServiceImpl {
     private RoleRepository roleRepository;
 
     @Autowired
+    private ParticipationRepository participationRepository;
+
+    @Autowired
     private RoleMapper roleMapper;
 
+
+
+    @Override
     public CreateRoleResponse createRole(CreateRoleRequest request) {
         logger.trace("Creating role {}", request);
 
@@ -43,6 +53,7 @@ public class RoleServiceImpl {
         return roleMapper.toResponse(newRole);
     }
 
+    @Override
     public List<CreateRoleResponse> getRoles() {
         logger.trace("Finding all roles !");
 
@@ -54,6 +65,7 @@ public class RoleServiceImpl {
         return roleList;
     }
 
+    @Override
     public CreateRoleResponse findRoleByName(String name) {
         logger.trace("Findind a role by name");
 
@@ -66,10 +78,11 @@ public class RoleServiceImpl {
         }
     }
 
+    @Override
     public CreateRoleResponse fullRoleUpdate(UpdateRoleRequest updateRole) {
         logger.trace("Updating role !");
 
-        Optional<RoleEntity> roleUpdated = roleRepository.findByName(updateRole.name());
+        Optional<RoleEntity> roleUpdated = roleRepository.findById(updateRole.id());
         if(roleUpdated.isPresent()) {
 
             roleUpdated.get().setName(updateRole.name());
@@ -78,10 +91,29 @@ public class RoleServiceImpl {
             return roleMapper.toResponse(roleUpdated.get());
         }
         else {
-            throw new RoleNotFoundException("Role with name: " + updateRole.name() + " not found !");
+            throw new RoleNotFoundException("Role with ID: " + updateRole.id() + " not found !");
         }
     }
 
-    // FINISHING ROLE DELETE, ADDING ROLE IS IN A PARTICIPATION EXCEPTION
+
+    public DeleteResponse deleteRole(Long id) {
+
+        if(participationRepository.existsByRole_Id(id)) {
+            throw new RoleHasParticipation("Role with ID: " + id + " has at least one participation ! Please delete the participation first !");
+        }
+
+        boolean exists = roleRepository.existsById(id);
+        if(exists) {
+            roleRepository.deleteById(id);
+            return new DeleteResponse("Role with ID: " + id + " deleted sucessfully !");
+        }
+        else {
+            throw new RoleNotFoundException("Role with ID: " + id + " not found !");
+        }
+
+
+    }
+
+
 
 }
