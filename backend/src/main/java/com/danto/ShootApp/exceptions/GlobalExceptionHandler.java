@@ -5,6 +5,7 @@ import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.ValidationErrorResponse;
 import com.danto.ShootApp.dto.competition.CompetitionNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.competition.DateNotValidResponse;
+import com.danto.ShootApp.dto.role.RoleNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
@@ -94,14 +95,14 @@ public class GlobalExceptionHandler {
     // ROLES ERRORS AND EXCEPTIONS
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RoleAlreadyExists.class)
-    public RoleAlreadyExists roleAlreadyExistsResponse(RoleAlreadyExists e) {
-        return new RoleAlreadyExists(e.getMessage());
+    public RoleNotFoundOrExistsResponse roleAlreadyExistsResponse(RoleAlreadyExists e) {
+        return new RoleNotFoundOrExistsResponse(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(RoleNotFoundException.class)
-    public RoleNotFoundException roleNotFoundResponse(RoleNotFoundException e) {
-        return new RoleNotFoundException(e.getMessage());
+    public RoleNotFoundOrExistsResponse roleNotFoundResponse(RoleNotFoundException e) {
+        return new RoleNotFoundOrExistsResponse(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
