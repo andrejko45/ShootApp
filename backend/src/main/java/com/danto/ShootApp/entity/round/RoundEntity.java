@@ -47,5 +47,8 @@ public class RoundEntity {
     @Column(name = "order_index",nullable = false)
     private Integer orderIndex;
 
+    @Column(name = "description")
+    private String description;
+
 
 }
