@@ -4,6 +4,7 @@ package com.danto.ShootApp.entity.round;
 import com.danto.ShootApp.entity.competition.CompetitionEntity;
 import com.danto.ShootApp.entity.result.ResultEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,10 @@ public class RoundEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "id_competition")
