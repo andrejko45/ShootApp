@@ -9,5 +9,6 @@ public interface ParticipationRepository extends JpaRepository<ParticipationEnti
     boolean existsByUser_Id(Long id);
     boolean existsByCompetition_Id(Long id);
     boolean existsByRole_Id(Long id);
+    boolean existsByUser_IdAndCompetition_Id(Long idU, Long idC); // Overenie ci dany pouzivatel nema uz ucast v danej sutazi
 
 }

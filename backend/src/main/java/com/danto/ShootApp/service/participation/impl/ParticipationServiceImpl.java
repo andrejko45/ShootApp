@@ -7,6 +7,7 @@ import com.danto.ShootApp.entity.participation.ParticipationEntity;
 import com.danto.ShootApp.entity.role.RoleEntity;
 import com.danto.ShootApp.entity.user.UserEntity;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
+import com.danto.ShootApp.exceptions.participationExceptions.UserAlreadyHasPartInComp;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.mapper.participation.ParticipationMapper;
@@ -14,6 +15,7 @@ import com.danto.ShootApp.repository.competition.CompetitionRepository;
 import com.danto.ShootApp.repository.participation.ParticipationRepository;
 import com.danto.ShootApp.repository.role.RoleRepository;
 import com.danto.ShootApp.repository.user.UserRepository;
+import com.danto.ShootApp.service.participation.ParticipationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-// Dokoncenie este Role CRUD nech mozme odskusat Postman na participation
 
 @Service
-public class ParticipationServiceImpl {
+public class ParticipationServiceImpl implements ParticipationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ParticipationServiceImpl.class);
 
@@ -46,6 +47,10 @@ public class ParticipationServiceImpl {
     public CreateParticipationResponse createParticipation(CreateParticipationRequest request) {
         logger.trace("Creating participation {}", request);
 
+        logger.info("userId={}", request.userId());
+        logger.info("compId={}", request.compId());
+        logger.info("roleId={}", request.roleId());
+
         Optional<UserEntity> user = userRepository.findById(request.userId());
         if(user.isEmpty()) {
             throw new UserNotFoundException("User with ID: " + request.userId() + " not found !");
@@ -59,6 +64,10 @@ public class ParticipationServiceImpl {
         Optional<RoleEntity> role = roleRepository.findById(request.roleId());
         if(role.isEmpty()) {
             throw new RoleNotFoundException("Role with ID: " + request.roleId() + " not found !");
+        }
+
+        if(participationRepository.existsByUser_IdAndCompetition_Id(request.userId(), request.compId())) {
+            throw new UserAlreadyHasPartInComp("User with ID: " + request.userId() + " has participation in competition ID: " + request.compId());
         }
 
         ParticipationEntity newParticipation = new ParticipationEntity();
