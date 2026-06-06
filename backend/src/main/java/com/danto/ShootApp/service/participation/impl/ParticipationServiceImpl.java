@@ -1,5 +1,6 @@
 package com.danto.ShootApp.service.participation.impl;
 
+import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.participation.CreateParticipationRequest;
 import com.danto.ShootApp.dto.participation.CreateParticipationResponse;
 import com.danto.ShootApp.entity.competition.CompetitionEntity;
@@ -7,6 +8,7 @@ import com.danto.ShootApp.entity.participation.ParticipationEntity;
 import com.danto.ShootApp.entity.role.RoleEntity;
 import com.danto.ShootApp.entity.user.UserEntity;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
+import com.danto.ShootApp.exceptions.participationExceptions.ParticipationNotFound;
 import com.danto.ShootApp.exceptions.participationExceptions.UserAlreadyHasPartInComp;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
@@ -21,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -44,12 +48,9 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Autowired
     private ParticipationMapper participationMapper;
 
+    @Override
     public CreateParticipationResponse createParticipation(CreateParticipationRequest request) {
         logger.trace("Creating participation {}", request);
-
-        logger.info("userId={}", request.userId());
-        logger.info("compId={}", request.compId());
-        logger.info("roleId={}", request.roleId());
 
         Optional<UserEntity> user = userRepository.findById(request.userId());
         if(user.isEmpty()) {
@@ -82,5 +83,43 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     }
 
+    @Override
+    public List<CreateParticipationResponse> getParticipations() {
+        logger.trace("Getting all participations");
+
+        List<CreateParticipationResponse> allPart = new ArrayList<>();
+        for(ParticipationEntity p : participationRepository.findAll()) {
+            allPart.add(participationMapper.toResponse(p));
+        }
+
+        return allPart;
+
+    }
+
+    @Override
+    public CreateParticipationResponse findById(Long id) {
+        logger.trace("Finding participation by ID" + id);
+
+        Optional<ParticipationEntity> partId = participationRepository.findById(id);
+        if(partId.isPresent()) {
+            return participationMapper.toResponse(partId.get());
+        }
+        else {
+            throw new ParticipationNotFound("Participaton with ID: " + id + " not found !");
+        }
+    }
+
+    @Override
+    public DeleteResponse deleteById(Long id) {
+        logger.trace("Deleting participation with ID: " + id);
+
+        if(participationRepository.existsById(id)) {
+            participationRepository.deleteById(id);
+            return new DeleteResponse("Participation with ID: " + id + " deleted sucessfully !");
+        }
+        else {
+            throw new ParticipationNotFound("Participation with ID: " + id + " not found !");
+        }
+    }
 
 }

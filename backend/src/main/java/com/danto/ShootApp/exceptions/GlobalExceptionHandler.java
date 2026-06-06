@@ -5,6 +5,7 @@ import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.ValidationErrorResponse;
 import com.danto.ShootApp.dto.competition.CompetitionNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.competition.DateNotValidResponse;
+import com.danto.ShootApp.dto.participation.ParticipationNotFoundOrExists;
 import com.danto.ShootApp.dto.participation.UserHasAlreadyPartInComp;
 import com.danto.ShootApp.dto.role.RoleNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
@@ -12,6 +13,7 @@ import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
+import com.danto.ShootApp.exceptions.participationExceptions.ParticipationNotFound;
 import com.danto.ShootApp.exceptions.participationExceptions.UserAlreadyHasPartInComp;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleAlreadyExists;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleHasParticipation;
@@ -120,6 +122,10 @@ public class GlobalExceptionHandler {
         return new UserHasAlreadyPartInComp(e.getMessage());
     }
 
-
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ParticipationNotFound.class)
+    public ParticipationNotFoundOrExists participationNotFound(ParticipationNotFound e) {
+        return new ParticipationNotFoundOrExists(e.getMessage());
+    }
 
 }
