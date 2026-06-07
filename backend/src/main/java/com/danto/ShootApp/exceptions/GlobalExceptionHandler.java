@@ -9,6 +9,7 @@ import com.danto.ShootApp.dto.participation.ParticipationNotFoundOrExists;
 import com.danto.ShootApp.dto.participation.UserHasAlreadyPartInComp;
 import com.danto.ShootApp.dto.role.RoleNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.round.DuplicateRoundFormat;
+import com.danto.ShootApp.dto.round.RoundNotFound;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
@@ -21,6 +22,7 @@ import com.danto.ShootApp.exceptions.roleExceptions.RoleHasParticipation;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.exceptions.roundExceptions.NameHasToBeUniqueInCompException;
 import com.danto.ShootApp.exceptions.roundExceptions.OrderHasToBeUniqueException;
+import com.danto.ShootApp.exceptions.roundExceptions.RoundNotFoundException;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
 import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
@@ -146,5 +148,12 @@ public class GlobalExceptionHandler {
     public DuplicateRoundFormat duplicateOrder(OrderHasToBeUniqueException e) {
         return new DuplicateRoundFormat(e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(RoundNotFoundException.class)
+    public RoundNotFound roundNotFound(RoundNotFoundException e) {
+        return new RoundNotFound(e.getMessage());
+    }
+
 
 }

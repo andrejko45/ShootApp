@@ -1,8 +1,11 @@
 package com.danto.ShootApp.service.round.impl;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.danto.ShootApp.exceptions.roundExceptions.RoundNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ public class RoundServiceImpl implements RoundService{
     @Autowired
     private RoundMapper roundMapper;
 
-
+    @Override
     public CreateRoundResponse createRound(CreateRoundRequest request) {
         logger.trace("Creating round {}", request);
 
@@ -63,6 +66,39 @@ public class RoundServiceImpl implements RoundService{
         return roundMapper.toResponse(newRound);
 
     }
+
+    @Override
+    public CreateRoundResponse getByCompIdAndName(Long compId, String name) {
+        logger.trace("Finding round " + name + " in competition with ID: " + compId);
+
+        boolean exists = competitionRepository.existsById(compId);
+        if(!exists) {
+            throw new CompetitionNotFoundException("Competition with ID: " + compId + " not found !");
+        }
+
+        Optional<RoundEntity> foundRound = roundRepository.findByCompetition_IdAndName(compId, name);
+        if(foundRound.isEmpty()) {
+            throw new RoundNotFoundException("Round " + name + " in competition with ID: " + compId + " not found !");
+        }
+        else {
+            return roundMapper.toResponse(foundRound.get());
+        }
+
+    }
+
+    @Override
+    public List<CreateRoundResponse> getAllRounds() {
+        logger.trace("Getting all rounds");
+
+        List<CreateRoundResponse> roundList = new ArrayList<>();
+        for(RoundEntity r : roundRepository.findAll()) {
+            roundList.add(roundMapper.toResponse(r));
+        }
+
+        return roundList;
+    }
+
+    // DELETE ZAKAZAT AK MA VYSLEDKY DANE KOLO
 
 
 }
