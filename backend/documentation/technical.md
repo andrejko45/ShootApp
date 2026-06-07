@@ -1,4 +1,4 @@
-## Technická dokumentácia
+# Technická dokumentácia
 
 ### Štruktúra projektu 
     
