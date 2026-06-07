@@ -8,6 +8,7 @@ import com.danto.ShootApp.dto.competition.DateNotValidResponse;
 import com.danto.ShootApp.dto.participation.ParticipationNotFoundOrExists;
 import com.danto.ShootApp.dto.participation.UserHasAlreadyPartInComp;
 import com.danto.ShootApp.dto.role.RoleNotFoundOrExistsResponse;
+import com.danto.ShootApp.dto.round.DuplicateRoundFormat;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
@@ -18,6 +19,8 @@ import com.danto.ShootApp.exceptions.participationExceptions.UserAlreadyHasPartI
 import com.danto.ShootApp.exceptions.roleExceptions.RoleAlreadyExists;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleHasParticipation;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
+import com.danto.ShootApp.exceptions.roundExceptions.NameHasToBeUniqueInCompException;
+import com.danto.ShootApp.exceptions.roundExceptions.OrderHasToBeUniqueException;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
 import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
@@ -97,6 +100,7 @@ public class GlobalExceptionHandler {
     }
 
     // ROLES ERRORS AND EXCEPTIONS
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RoleAlreadyExists.class)
     public RoleNotFoundOrExistsResponse roleAlreadyExistsResponse(RoleAlreadyExists e) {
@@ -116,6 +120,7 @@ public class GlobalExceptionHandler {
     }
 
     // PARTICIPATION ERRORS AND EXCEPTIONS
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserAlreadyHasPartInComp.class)
     public UserHasAlreadyPartInComp userHasAlreadyPartInComp(UserAlreadyHasPartInComp e) {
@@ -126,6 +131,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ParticipationNotFound.class)
     public ParticipationNotFoundOrExists participationNotFound(ParticipationNotFound e) {
         return new ParticipationNotFoundOrExists(e.getMessage());
+    }
+
+    // ROUND ERRORS AND EXCEPTIONS
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NameHasToBeUniqueInCompException.class) 
+    public DuplicateRoundFormat duplicateName(NameHasToBeUniqueInCompException e) {
+        return new DuplicateRoundFormat(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OrderHasToBeUniqueException.class)
+    public DuplicateRoundFormat duplicateOrder(OrderHasToBeUniqueException e) {
+        return new DuplicateRoundFormat(e.getMessage());
     }
 
 }
