@@ -46,4 +46,25 @@ Systém umožňuje:
     - Pred vytvorením podmienky že musí používateľ, súťaž a rola existovať
     - Zakázané mazanie v prípade že existujú výsledky
 
+### Kolo
+    - Konkrétne kolo v súťaži
+    - Musí existovať súťaž pri vytváraní
+    - Názov kola musí byť jedinečný v danej súťaži
+    - Poradia taktiež musí byť jedinečné v danej súťaži
+    - Zakázané mazanie pri existencii aspoň jedného výsledku v danom kole
 
+### Výsledok
+    - Výsledok súťažiaceho v konkrétnom kole 
+    - Pri vytvorení musí existovať kolo a súťaž
+    - Jedna účasť môže mať jedno len jeden výsledok v jednom kole
+    - Môžu byť mazané bez reštrikcie
+
+## API cesty
+    /users  
+    /competitions  
+    /participations  
+    /rounds  
+    /results  
+
+
+    
