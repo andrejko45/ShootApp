@@ -5,23 +5,29 @@ import com.danto.ShootApp.dto.DeleteResponse;
 import com.danto.ShootApp.dto.ValidationErrorResponse;
 import com.danto.ShootApp.dto.competition.CompetitionNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.competition.DateNotValidResponse;
+import com.danto.ShootApp.dto.participation.PartHasResult;
 import com.danto.ShootApp.dto.participation.ParticipationNotFoundOrExists;
 import com.danto.ShootApp.dto.participation.UserHasAlreadyPartInComp;
+import com.danto.ShootApp.dto.result.ResultNotFound;
 import com.danto.ShootApp.dto.role.RoleNotFoundOrExistsResponse;
 import com.danto.ShootApp.dto.round.DuplicateRoundFormat;
+import com.danto.ShootApp.dto.round.RoundHasResults;
 import com.danto.ShootApp.dto.round.RoundNotFound;
 import com.danto.ShootApp.dto.user.UserNotFoundOrExistsResponse;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompAlreadyExists;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompHasParticipation;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
 import com.danto.ShootApp.exceptions.competitionExceptions.DateNotValidException;
+import com.danto.ShootApp.exceptions.participationExceptions.PartHasAlreadyResultInRound;
 import com.danto.ShootApp.exceptions.participationExceptions.ParticipationNotFound;
 import com.danto.ShootApp.exceptions.participationExceptions.UserAlreadyHasPartInComp;
+import com.danto.ShootApp.exceptions.resultExceptions.ResultNotFoundException;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleAlreadyExists;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleHasParticipation;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.exceptions.roundExceptions.NameHasToBeUniqueInCompException;
 import com.danto.ShootApp.exceptions.roundExceptions.OrderHasToBeUniqueException;
+import com.danto.ShootApp.exceptions.roundExceptions.RoundHasResultsException;
 import com.danto.ShootApp.exceptions.roundExceptions.RoundNotFoundException;
 import com.danto.ShootApp.exceptions.userExceptions.UserAlreadyExists;
 import com.danto.ShootApp.exceptions.userExceptions.UserHasParticipationException;
@@ -135,6 +141,12 @@ public class GlobalExceptionHandler {
         return new ParticipationNotFoundOrExists(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PartHasAlreadyResultInRound.class)
+    public PartHasResult partHasResult(PartHasAlreadyResultInRound e) {
+        return new PartHasResult(e.getMessage());
+    }
+
     // ROUND ERRORS AND EXCEPTIONS
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -154,6 +166,21 @@ public class GlobalExceptionHandler {
     public RoundNotFound roundNotFound(RoundNotFoundException e) {
         return new RoundNotFound(e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RoundHasResultsException.class)
+    public RoundHasResults roundHasResults(RoundHasResultsException e) {
+        return new RoundHasResults(e.getMessage());
+    }
+
+    // RESULT ERRORS AND EXCEPTIONS
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResultNotFoundException.class)
+    public ResultNotFound resultNotFound(ResultNotFoundException e) {
+        return new ResultNotFound(e.getMessage());
+    }
+
 
 
 }

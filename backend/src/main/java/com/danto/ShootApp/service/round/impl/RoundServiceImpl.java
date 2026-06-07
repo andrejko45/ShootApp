@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.danto.ShootApp.dto.DeleteResponse;
+import com.danto.ShootApp.exceptions.roundExceptions.RoundHasResultsException;
 import com.danto.ShootApp.exceptions.roundExceptions.RoundNotFoundException;
+import com.danto.ShootApp.repository.result.ResultRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class RoundServiceImpl implements RoundService{
 
     @Autowired
     private CompetitionRepository competitionRepository;
+
+    @Autowired
+    private ResultRepository resultRepository;
     
     @Autowired
     private RoundMapper roundMapper;
@@ -99,6 +105,23 @@ public class RoundServiceImpl implements RoundService{
     }
 
     // DELETE ZAKAZAT AK MA VYSLEDKY DANE KOLO
+    @Override
+    public DeleteResponse deleteById(Long id) {
+        logger.trace("Deleting round with ID: " + id);
 
+        boolean exists = roundRepository.existsById(id);
+        if(!exists) {
+            throw new RoundNotFoundException("Round with ID: " + id + " not found !");
+        }
+
+        if(resultRepository.existsByRound_Id(id)) {
+            throw new RoundHasResultsException("Round with ID: " + id + " has at least one result ! Please delete the result first !");
+        }
+
+        roundRepository.deleteById(id);
+
+        return new DeleteResponse("Round with ID: " + id + " deleted sucessfully !");
+
+    }
 
 }

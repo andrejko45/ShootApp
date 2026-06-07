@@ -8,13 +8,16 @@ import com.danto.ShootApp.entity.participation.ParticipationEntity;
 import com.danto.ShootApp.entity.role.RoleEntity;
 import com.danto.ShootApp.entity.user.UserEntity;
 import com.danto.ShootApp.exceptions.competitionExceptions.CompetitionNotFoundException;
+import com.danto.ShootApp.exceptions.participationExceptions.PartHasAlreadyResultInRound;
 import com.danto.ShootApp.exceptions.participationExceptions.ParticipationNotFound;
 import com.danto.ShootApp.exceptions.participationExceptions.UserAlreadyHasPartInComp;
+import com.danto.ShootApp.exceptions.resultExceptions.ResultHasParticipationException;
 import com.danto.ShootApp.exceptions.roleExceptions.RoleNotFoundException;
 import com.danto.ShootApp.exceptions.userExceptions.UserNotFoundException;
 import com.danto.ShootApp.mapper.participation.ParticipationMapper;
 import com.danto.ShootApp.repository.competition.CompetitionRepository;
 import com.danto.ShootApp.repository.participation.ParticipationRepository;
+import com.danto.ShootApp.repository.result.ResultRepository;
 import com.danto.ShootApp.repository.role.RoleRepository;
 import com.danto.ShootApp.repository.user.UserRepository;
 import com.danto.ShootApp.service.participation.ParticipationService;
@@ -41,6 +44,9 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ResultRepository resultRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -113,7 +119,13 @@ public class ParticipationServiceImpl implements ParticipationService {
     public DeleteResponse deleteById(Long id) {
         logger.trace("Deleting participation with ID: " + id);
 
+
         if(participationRepository.existsById(id)) {
+
+            if(resultRepository.existsByParticipation_Id(id)) {
+                throw new PartHasAlreadyResultInRound("Participation with ID: " + id + " has at least one result ! Please delete result first !");
+            }
+
             participationRepository.deleteById(id);
             return new DeleteResponse("Participation with ID: " + id + " deleted sucessfully !");
         }
