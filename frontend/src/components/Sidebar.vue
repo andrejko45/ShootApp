@@ -3,12 +3,12 @@
     <h2 class="logo">ShootApp</h2>
 
     <nav>
-      <RouterLink to="/users">Users</RouterLink>
-      <RouterLink to="/competitions">Competitions</RouterLink>
-      <RouterLink to="/roles">Roles</RouterLink>
-      <RouterLink to="/participations">Participations</RouterLink>
-      <RouterLink to="/rounds">Rounds</RouterLink>
-      <RouterLink to="/results">Results</RouterLink>
+      <RouterLink to="/users">Používatelia</RouterLink>
+      <RouterLink to="/competitions">Súťaže</RouterLink>
+      <RouterLink to="/roles">Role</RouterLink>
+      <RouterLink to="/participations">Účasti</RouterLink>
+      <RouterLink to="/rounds">Kolá</RouterLink>
+      <RouterLink to="/results">Výsledky</RouterLink>
     </nav>
   </aside>
 </template>

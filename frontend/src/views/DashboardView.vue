@@ -2,10 +2,10 @@
   <h1>Dashboard</h1>
 
   <div class="cards">
-    <div class="card">Users</div>
-    <div class="card">Competitions</div>
-    <div class="card">Participations</div>
-    <div class="card">Results</div>
+    <div class="card">Používatelia</div>
+    <div class="card">Súťaže</div>
+    <div class="card">Účasti</div>
+    <div class="card">Výsledky</div>
   </div>
 </template>
 

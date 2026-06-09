@@ -1,5 +1,6 @@
 package com.danto.ShootApp.controller.round;
 
+import com.danto.ShootApp.dto.DeleteResponse;
 import org.springframework.web.bind.annotation.*;
 
 import com.danto.ShootApp.dto.round.CreateRoundRequest;
@@ -34,5 +35,9 @@ public class RoundController {
         return roundService.getByCompIdAndName(compId, name);
     }
 
+    @DeleteMapping(path = "/{id}")
+    public DeleteResponse deleteById(@PathVariable Long id) {
+        return roundService.deleteById(id);
+    }
 
 }
