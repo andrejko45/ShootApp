@@ -1,5 +1,14 @@
 services:
 
+  frontend:
+    build: ./frontend
+    container_name: shoot_app_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+
   backend:
     build: ./backend
     container_name: shoot_app_backend
