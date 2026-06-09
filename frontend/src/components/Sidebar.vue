@@ -1,32 +1,43 @@
 <template>
   <aside class="sidebar">
-    <h2 class="logo">ShootApp</h2>
+    <h2 class="logo">🎯 ShootApp</h2>
 
-    <nav>
-      <RouterLink to="/users">Používatelia</RouterLink>
-      <RouterLink to="/competitions">Súťaže</RouterLink>
-      <RouterLink to="/roles">Role</RouterLink>
-      <RouterLink to="/participations">Účasti</RouterLink>
-      <RouterLink to="/rounds">Kolá</RouterLink>
-      <RouterLink to="/results">Výsledky</RouterLink>
+    <p class="subtitle">
+      Manažment výsledkov v streleckej súťaži
+    </p>
+
+    <nav class="menu">
+      <RouterLink to="/users">👤 Používatelia</RouterLink>
+      <RouterLink to="/competitions">🏆 Súťaže</RouterLink>
+      <RouterLink to="/roles">🎖️ Role</RouterLink>
+      <RouterLink to="/participations">📝 Registrácie</RouterLink>
+      <RouterLink to="/rounds">🎯 Kolá</RouterLink>
+      <RouterLink to="/results">📊 Výsledky</RouterLink>
     </nav>
   </aside>
 </template>
 
 <style scoped>
 .sidebar {
-  width: 240px;
-  height: 100vh;
+  width: 260px;
+  min-height: 100vh;
   background: #1f2937;
   color: white;
   padding: 20px;
 }
 
 .logo {
-  margin-bottom: 30px;
+  margin-bottom: 8px;
 }
 
-nav {
+.subtitle {
+  color: #9ca3af;
+  font-size: 12px;
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+.menu {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -35,7 +46,7 @@ nav {
 a {
   color: white;
   text-decoration: none;
-  padding: 10px;
+  padding: 12px;
   border-radius: 6px;
 }
 

@@ -13,6 +13,9 @@ const showForm = ref(false)
 
 const visibleIds = ref({})
 
+const errorMessage = ref('')
+const successMessage = ref('')
+
 const newResult = ref({
   partId: '',
   roundId: '',
@@ -41,19 +44,32 @@ async function handleSaveResult() {
 
     showForm.value = false
 
-  } catch (error) {
+  }
 
-    if (error.response?.data?.message) {
-      alert(error.response.data.message)
-    } else {
-      alert('Unexpected error')
+    catch (error) {
+
+                if (error.response?.data?.errors) {
+                  errorMessage.value = error.response.data.errors.join(', ')
+                  return
+                }
+
+                if (error.response?.data?.message) {
+                  errorMessage.value = error.response.data.message
+                  return
+                }
+
+                errorMessage.value = 'Unexpected error'
     }
 
-  }
 }
 
 async function handleDeleteResult(id) {
   try {
+
+    if (!confirm('Ste si istý že chcete vymazať tento výsledok ?')) {
+      return
+    }
+
     await deleteResult(id)
 
     results.value = await getResults()
@@ -86,6 +102,20 @@ function toggleId(id) {
         + Pridať výsledok
       </button>
     </div>
+
+    <div
+              v-if="errorMessage"
+              class="error-box"
+            >
+              {{ errorMessage }}
+            </div>
+
+             <div
+                  v-if="successMessage"
+                  class="success-box"
+                >
+                  {{ successMessage }}
+             </div>
 
     <div
       v-if="showForm"
@@ -234,6 +264,11 @@ th {
   padding: 14px;
 }
 
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+
 td {
   padding: 14px;
   border-top: 1px solid #e5e7eb;
@@ -263,4 +298,23 @@ td {
   margin-right: 10px;
   font-weight: bold;
 }
+
+.success-box {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.error-box {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
 </style>

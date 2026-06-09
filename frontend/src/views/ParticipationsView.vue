@@ -13,6 +13,9 @@ const showForm = ref(false)
 
 const visibleIds = ref({})
 
+const errorMessage = ref('')
+const successMessage = ref('')
+
 const newParticipation = ref({
   userId: '',
   compId: '',
@@ -41,17 +44,29 @@ async function handleSaveParticipation() {
 
     showForm.value = false
 
-  } catch (error) {
-    if (error.response?.data?.message) {
-      alert(error.response.data.message)
-    } else {
-      alert('Unexpected error')
-    }
-  }
+  }  catch (error) {
+
+          if (error.response?.data?.errors) {
+            errorMessage.value = error.response.data.errors.join(', ')
+            return
+          }
+
+          if (error.response?.data?.message) {
+            errorMessage.value = error.response.data.message
+            return
+          }
+
+          errorMessage.value = 'Unexpected error'
+        }
 }
 
 async function handleDeleteParticipation(id) {
   try {
+
+    if (!confirm('Ste si istý že chcete vymazať túto účasť ?')) {
+      return
+    }
+
     await deleteParticipation(id)
 
     participations.value = await getParticipations()
@@ -73,7 +88,7 @@ function toggleId(id) {
 <template>
   <div class="page">
     <div class="header">
-      <h1>Účasti</h1>
+      <h1>Registrácie</h1>
 
       <button
         class="create-btn"
@@ -82,6 +97,20 @@ function toggleId(id) {
         + Pridať účasť
       </button>
     </div>
+
+      <div
+          v-if="errorMessage"
+          class="error-box"
+        >
+          {{ errorMessage }}
+        </div>
+
+         <div
+              v-if="successMessage"
+              class="success-box"
+            >
+              {{ successMessage }}
+         </div>
 
     <div
       v-if="showForm"
@@ -222,6 +251,10 @@ table {
   border-collapse: collapse;
 }
 
+tbody tr:hover {
+  background: #f9fafb;
+}
+
 th {
   background: #f3f4f6;
   text-align: left;
@@ -257,4 +290,23 @@ td {
   margin-right: 10px;
   font-weight: bold;
 }
+
+.success-box {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.error-box {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
 </style>

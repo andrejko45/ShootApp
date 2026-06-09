@@ -11,6 +11,8 @@ const roles = ref([])
 const showForm = ref(false)
 const editMode = ref(false)
 const visibleIds = ref({})
+const errorMessage = ref('')
+const successMessage = ref('')
 
 const newRole = ref({
   name: '',
@@ -32,6 +34,7 @@ async function handleSaveRole() {
       await updateRole(newRole.value)
     } else {
       await createRole(newRole.value)
+      successMessage.value = 'Rola bola vytvorená úspešne !'
     }
 
     roles.value = await getRoles()
@@ -45,14 +48,28 @@ async function handleSaveRole() {
     showForm.value = false
 
   } catch (error) {
-    if(error.response?.data?.message) {
-      alert(error.response.data.message)
+
+      if (error.response?.data?.errors) {
+        errorMessage.value = error.response.data.errors.join(', ')
+        return
+      }
+
+      if (error.response?.data?.message) {
+        errorMessage.value = error.response.data.message
+        return
+      }
+
+      errorMessage.value = 'Unexpected error'
     }
-  }
 }
 
 async function handleDeleteRole(id) {
   try {
+
+    if (!confirm('Ste si istý že chcete vymazať túto rolu ?')) {
+      return
+    }
+
     await deleteRole(id)
     roles.value = await getRoles()
   } catch (error) {
@@ -93,6 +110,19 @@ async function handleDeleteRole(id) {
       </button>
     </div>
 
+    <div
+      v-if="errorMessage"
+      class="error-box"
+    >
+      {{ errorMessage }}
+    </div>
+
+     <div
+          v-if="successMessage"
+          class="success-box"
+        >
+          {{ successMessage }}
+     </div>
     <div v-if="showForm" class="form-container">
       <input v-model="newRole.name" placeholder="Názov" />
       <input v-model="newRole.description" placeholder="Popis" />
@@ -193,6 +223,10 @@ table {
   border-collapse: collapse;
 }
 
+tbody tr:hover {
+  background: #f9fafb;
+}
+
 th {
   background: #f3f4f6;
   text-align: left;
@@ -260,6 +294,24 @@ td {
   margin-left: 10px;
   margin-right: 10px;
   font-weight: bold;
+}
+
+.success-box {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.error-box {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
 }
 
 </style>
